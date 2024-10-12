@@ -9,12 +9,6 @@ on:
       DOCKERHUB_TOKEN:
         required: true
         description: "Token for DockerHub auth"
-      AWS_ACCESS_KEY_ID:
-        required: true
-        description: "AWS Access Key ID"
-      AWS_SECRET_ACCESS_KEY:
-        required: true
-        description: "AWS Secret Access Key"
 
 jobs:
   python:
@@ -47,21 +41,9 @@ jobs:
       - name: Terraform lint
         run: |
           cd infra/
-          docker compose run --rm -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
-                                 -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
-                                 terraform -chdir=deploy/ init -backend=false
-          docker compose run --rm -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
-                                 -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
-                                 terraform -chdir=setup/ init -backend=false
-          docker compose run --rm -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
-                                 -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
-                                 terraform -chdir=setup/ validate
-          docker compose run --rm -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
-                                 -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
-                                 terraform -chdir=setup/ fmt -check
-          docker compose run --rm -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
-                                 -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
-                                 terraform -chdir=deploy/ validate
-          docker compose run --rm -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
-                                 -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
-                                 terraform -chdir=deploy/ fmt -check
+          docker compose run --rm terraform -chdir=deploy/ init -backend=false
+          docker compose run --rm terraform -chdir=setup/ init -backend=false
+          docker compose run --rm terraform -chdir=setup/ validate
+          docker compose run --rm terraform -chdir=setup/ fmt -check
+          docker compose run --rm terraform -chdir=deploy/ validate
+          docker compose run --rm terraform -chdir=deploy/ fmt -check

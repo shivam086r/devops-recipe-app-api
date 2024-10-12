@@ -9,6 +9,7 @@ jobs:
     name: Test and Lint
     uses: ./.github/workflows/test-and-lint.yml
     secrets:
-      DOCKERHUB_USER: ${{vars.DOCKERHUB_USER}}
-      DOCKERHUB_TOKEN: ${{secrets.DOCKERHUB_TOKEN}}
-     
+      DOCKERHUB_USER: ${{ vars.DOCKERHUB_USER }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Add this line
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # Add this line

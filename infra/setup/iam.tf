@@ -158,9 +158,13 @@ resource "aws_iam_user_policy_attachment" "ec2" {
   policy_arn = aws_iam_policy.ec2.arn
 }
 
-#########################
-# Policy for RDS access #
-#########################
+###############################################
+# Policy and service link role for RDS access #
+###############################################
+
+resource "aws_iam_service_linked_role" "rds" {
+  aws_service_name = "rds.amazonaws.com"
+}
 
 data "aws_iam_policy_document" "rds" {
   statement {
